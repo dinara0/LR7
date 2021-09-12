@@ -20,7 +20,12 @@ namespace LR7
             public int x = 0;
             public int y = 0;//координаты 
             public Color color = Color.Black; //Установка цвета по умолчанию
-                                              // public bool Is_Drawn = true; //Проверка на отрисовку окружности на панели
+            //public bool isSelect = false;
+            protected bool isSelect = false;
+            public virtual void IsSelect (bool fl){  }//проверка на попадание
+                                                                   // public bool Is_Drawn = true; //Проверка на отрисовку окружности на панели
+            public virtual bool IsSelect() { return isSelect; }//проверка на попадание
+                                                                   // public bool Is_Drawn = true; //Проверка на отрисовку окружности на панели
             public virtual GraphicsPath GetPath()
             {//создание графического контура
                 var path = new GraphicsPath();
@@ -43,6 +48,7 @@ namespace LR7
             private Figure[] _figures;
             public CGroup(int maxcount)
             {
+                _figures=new Figure[maxcount];
                 _maxcount = maxcount;
                 _count = 0;
                 for (int i = 0; i < _maxcount; i++)
@@ -54,13 +60,18 @@ namespace LR7
                     _figures[i] = null; //
                 _figures = null;// очищаем сам массив
             }
+            public override bool IsSelect(bool fl)
+            {
+                isSelect = fl;
+                return true;
 
+            }
             public bool AddFigure(Figure figure)
             {
                 if (_count >= _maxcount)
-                    return false;
+                    return false;                
+                _figures[_count] = figure;
                 _count++;
-                _figures[_count - 1] = figure;
                 return true;
 
             }
@@ -95,7 +106,7 @@ namespace LR7
             public override bool IsBlackboard()
             {
                 for (int i = 0; i < _count; i++)
-                    if (_figures[i].IsBlackboard())// если хотя бы один объект вышел за пределы 
+                    if (!(_figures[i].IsBlackboard()))// если хотя бы один объект вышел за пределы 
                         return false;
                 return true;
             }

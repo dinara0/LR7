@@ -46,49 +46,7 @@ namespace LR7
             Coord_label.Text = "";
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (storage.get_count() != 0)
-                for (int i = 0; i < storage.get_count(); ++i)
-                { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
-                    if (storage.Empty(i) == false && storage.get_value(i).LineColor == Color.Red)
-                    {
-                        switch (e.KeyData)
-                        {
-                            case (Keys.Delete):
-                                storage.delete_value(i); //удаление объекта из хранилища
-                                i--;
-                                break;
-                            case (Keys.W)://двигаем вверх
-                                if (storage.objects[i].IsBlackboard())
-                                    storage.objects[i].Move(0, -1);
-                                break;
-                            case (Keys.A)://двигаем влево
-                                if (storage.objects[i].IsBlackboard())
-                                    storage.objects[i].Move(-1, 0);
-                                break;
-                            case (Keys.S)://двигаем вниз
-                                if (storage.objects[i].IsBlackboard())
-                                    storage.objects[i].Move(0, 1);
-                                break;
-                            case (Keys.D)://двигаем вправо
-                                if (storage.objects[i].IsBlackboard())
-                                    storage.objects[i].Move(1, 0);
-                                break;
-                            case (Keys.Q)://увеличиваем размер объекта
-                                if (storage.objects[i].IsBlackboard())
-                                    storage.objects[i].Resize(1);
-                                break;
-                            case (Keys.E)://уменьшаем размер объекта
-                                if (storage.objects[i].IsBlackboard())
-                                    storage.objects[i].Resize(-1);
-                                break;
-                        }
-
-                    }
-                }
-            RedrawFigures(ref storage);//перерисовываем 
-        }
+        
 
 
 
@@ -124,10 +82,7 @@ namespace LR7
             buttonTriangle.Enabled = false;
         }
 
-        private void buttonGroup_Click(object sender, EventArgs e)
-        {
-
-        }
+        
         //Обработчик события Click кнопки "Выбрать цвет" 
         private void ShowColor_button_Click(object sender, EventArgs e)
         {
@@ -150,29 +105,32 @@ namespace LR7
             if (storage.get_count() != 0)
                 for (int i = 0; i < storage.get_count(); ++i)
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
-                    if (storage.Empty(i) == false && storage.get_value(i).LineColor == Color.Red)
+                    if (storage.Empty(i) == false && storage.get_value(i).isSelect)
                     {
 
                         count++;
 
                     }
                 }
-            CGroup group = new CGroup(count);
+            Figure group = new CGroup(count);
             int j = 0;
             if (storage.get_count() != 0)
                 for (int i = 0; i < storage.get_count(); ++i)
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
-                    if (storage.Empty(i) == false && storage.get_value(i).LineColor == Color.Red)
+                    if (storage.Empty(i) == false && storage.get_value(i).isSelect)
                     {
-                        group.AddFigure(storage.get_value(j));
+                        ((CGroup)group).AddFigure(storage.get_value(i));
                         storage.delete_value(i);
-                        j++;
+
+                        
                     }
                 }
+            storage.set_value(ref group);
+            SelectionRemove(ref storage);
         }
 
         //Функция обработки события нажатия курсора на панель
-       
+
         private void panel1_MouseDown_1(object sender, MouseEventArgs e)
         {
             if (select)//если нажата кнопка выделения объекта/ов
@@ -182,6 +140,7 @@ namespace LR7
                 if (check != -1)// если кликнули на объект
                 {
                     storage.objects[check].LineColor = Color.Red;// цвет объекта меняется на красный
+                    storage.objects[check].isSelect = true;
                     RedrawFigures(ref storage);// перерисовывем
                 }
                 //Если нажат ctrl, выделяем несколько объектов
@@ -228,12 +187,60 @@ namespace LR7
 
                 //Устанавливаем цвет выделяемого объекта на новый добавленный
                 storage.objects[storage.get_count() - 1].LineColor = Color.Red;
+                storage.objects[storage.get_count() - 1].isSelect = true;
 
                 //Отрисовываем фигуру
                 figure.Draw(g);
 
             }
         metka:;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (storage.get_count() != 0)
+                for (int i = 0; i < storage.get_count(); ++i)
+                { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
+                    if (storage.Empty(i) == false && storage.get_value(i).isSelect)
+                    {
+                        switch (e.KeyData)
+                        {
+                            case (Keys.Delete):
+                                storage.delete_value(i); //удаление объекта из хранилища
+                                i--;
+                                break;
+                            case (Keys.W)://двигаем вверх
+                                if (storage.objects[i].IsBlackboard())
+                                    storage.objects[i].Move(0, -1);
+                                break;
+                            case (Keys.A)://двигаем влево
+                                if (storage.objects[i].IsBlackboard())
+                                    storage.objects[i].Move(-1, 0);
+                                break;
+                            case (Keys.S)://двигаем вниз
+                                if (storage.objects[i].IsBlackboard())
+                                    storage.objects[i].Move(0, 1);
+                                break;
+                            case (Keys.D)://двигаем вправо
+                                if (storage.objects[i].IsBlackboard())
+                                    storage.objects[i].Move(1, 0);
+                                break;
+                            case (Keys.Q)://увеличиваем размер объекта
+                                if (storage.objects[i].IsBlackboard())
+                                    storage.objects[i].Resize(1);
+                                break;
+                            case (Keys.E)://уменьшаем размер объекта
+                                if (storage.objects[i].IsBlackboard())
+                                    storage.objects[i].Resize(-1);
+                                break;
+                        }
+                        RedrawFigures(ref storage);//перерисовываем 
+                    }
+                }
+            //RedrawFigures(ref storage);//перерисовываем 
+
+
         }
     }
 }

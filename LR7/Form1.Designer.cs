@@ -51,6 +51,7 @@ namespace LR7
             this.panel1.Size = new System.Drawing.Size(1083, 565);
             this.panel1.TabIndex = 1;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown_1);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseMove);
             // 
             // Coord_label
             // 
@@ -150,8 +151,11 @@ namespace LR7
             this.Controls.Add(this.buttonCircle);
             this.Controls.Add(this.buttonTriangle);
             this.Controls.Add(this.buttonSquare);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

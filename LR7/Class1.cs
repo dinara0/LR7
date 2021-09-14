@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace LR7
 {
@@ -37,6 +38,9 @@ namespace LR7
             public virtual void Resize(int a) { }//изменение размера
 
             public virtual bool IsBlackboard() { return false; }// контроль выхода за рабочую область
+
+            public virtual void Save(String _stream) { }
+            public virtual void Load(String _stream) { }
 
 
         }
@@ -495,6 +499,56 @@ namespace LR7
                 if (objects[CountElem] == null)
                     return true;
                 else return false;
+            }
+
+            public void LoadFigures(char filename)//сохранение данных о фигурах в текстовый файл
+            {
+                //File.Create("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt");// создаем файл
+                //File.AppendAllText("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt", size); //записываем в файл количество фигур хранилища
+                //FileStream file1 = new FileStream("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt", FileMode.Append); //открытие файла на дозапись в конец файла
+                StreamWriter writer = new StreamWriter("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt,", true, System.Text.Encoding.Default); //создаем «потоковый писатель» и связываем его с файловым потоком
+                writer.WriteLine(size+'0'); //записываем в файл с добавлением новой строки
+                
+                //for (int i = 0; i < size; ++i)
+                    // objects[i].Save();
+                writer.Close(); //закрываем поток. Не закрыв поток, в файл ничего не запишется
+            }
+            public void ReadFigures(char filename)
+            {
+                string line;
+                StreamReader reader = new StreamReader("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt");
+                line = reader.ReadLine();
+                //Console.WriteLine(line);//считываем строку с колличеством объектов
+                int count = Int32.Parse(line);//записываем количество фигур
+                for (int i = 0; i < count; ++i)
+                {
+                   // Console.WriteLine(reader.ReadLine());//
+                    line = reader.ReadLine();
+                    Figure f;
+                    switch (line)
+                    {
+                        case "C":
+                            f = new Circle();
+                            f.Load(reader.ReadLine());
+                            break;
+                        case "L":
+                            f = new Line();
+                            f.Load(reader.ReadLine());
+                            break;
+                        case "S":
+                            f = new Square();
+                            f.Load(reader.ReadLine());
+                            break;
+                        case "T":
+                            f = new Triangle();
+                            f.Load(reader.ReadLine());
+                            break;
+
+                    }
+                    reader.Close;
+                }
+
+
             }
         };
 

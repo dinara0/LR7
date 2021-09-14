@@ -21,7 +21,7 @@ namespace LR7
                 if (!storage.Empty(i))
                 {
                     storage.objects[i].LineColor = Color.Black; //установка стандартного цвета
-                    storage.objects[i].isSelect = false;
+                    storage.objects[i].IsSelect(false);
                     RedrawFigures(ref storage);// перерисовываем
                 }
         }

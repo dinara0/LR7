@@ -60,15 +60,20 @@ namespace LR7
                     _figures[i] = null; //
                 _figures = null;// очищаем сам массив
             }
-            public override bool IsSelect(bool fl)
+            public override void IsSelect(bool fl)
             {
                 isSelect = fl;
-                return true;
+                for (int i = 0; i < _count; i++) // очищаем массив ссылок
+                    _figures[i].IsSelect(fl);
 
+            }
+            public override bool IsSelect()
+            {                
+                return isSelect;
             }
             public bool AddFigure(Figure figure)
             {
-                if (_count >= _maxcount)
+                if (_count > _maxcount)
                     return false;                
                 _figures[_count] = figure;
                 _count++;
@@ -164,7 +169,8 @@ namespace LR7
             }
             public override void Move(int a, int b)
             {
-                Center = new Point(Center.X + a, Center.Y + b);
+                x += a;
+                y += b;
             }
 
             public override bool IsBlackboard()
@@ -177,6 +183,19 @@ namespace LR7
             public override void Resize(int a)
             {
                 D = D + 2 * a;
+            }
+
+            public override void IsSelect(bool fl)
+            {
+                isSelect = fl;
+                if (!fl)
+                    LineColor = Color.Black;
+                else LineColor = Color.Red;
+
+            }
+            public override bool IsSelect()
+            {
+                return isSelect;
             }
             //Деструктор
             ~Circle() { }
@@ -240,6 +259,18 @@ namespace LR7
                 Point1 = new PointF(Point1.X - v.X * a, Point1.Y - v.Y * a);
                 Point2 = new PointF(Point2.X + v.X * a, Point2.Y + v.Y * a);
             }
+            public override void IsSelect(bool fl)
+            {
+                isSelect = fl;
+                if (!fl)
+                    LineColor = Color.Black;
+                else LineColor = Color.Red;
+
+            }
+            public override bool IsSelect()
+            {
+                return isSelect;
+            }
             //Деструктор
 
             ~Line() { }
@@ -300,6 +331,19 @@ namespace LR7
             public override void Resize(int a)
             {
                 A = A + a;
+            }
+
+            public override void IsSelect(bool fl)
+            {
+                isSelect = fl;
+                if (!fl)
+                    LineColor = Color.Black;
+                else LineColor = Color.Red;
+
+            }
+            public override bool IsSelect()
+            {
+                return isSelect;
             }
             //Деструктор
             ~Square() { }
@@ -383,7 +427,18 @@ namespace LR7
                 p[2].Y = y + 1 * H / 3;
 
             }
+            public override void IsSelect(bool fl)
+            {
+                isSelect = fl;
+                if (!fl)
+                    LineColor = Color.Black;
+                else LineColor = Color.Red;
 
+            }
+            public override bool IsSelect()
+            {
+                return isSelect;
+            }
             //Деструктор
             ~Triangle() { }
         }

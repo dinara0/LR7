@@ -105,7 +105,7 @@ namespace LR7
             if (storage.get_count() != 0)
                 for (int i = 0; i < storage.get_count(); ++i)
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
-                    if (storage.Empty(i) == false && storage.get_value(i).isSelect)
+                    if (storage.Empty(i) == false && storage.get_value(i).IsSelect())
                     {
 
                         count++;
@@ -113,11 +113,11 @@ namespace LR7
                     }
                 }
             Figure group = new CGroup(count);
-            int j = 0;
+            //int j = 0;
             if (storage.get_count() != 0)
                 for (int i = 0; i < storage.get_count(); ++i)
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
-                    if (storage.Empty(i) == false && storage.get_value(i).isSelect)
+                    if (storage.Empty(i) == false && storage.get_value(i).IsSelect())
                     {
                         ((CGroup)group).AddFigure(storage.get_value(i));
                         storage.delete_value(i);
@@ -140,7 +140,7 @@ namespace LR7
                 if (check != -1)// если кликнули на объект
                 {
                     storage.objects[check].LineColor = Color.Red;// цвет объекта меняется на красный
-                    storage.objects[check].isSelect = true;
+                    storage.objects[check].IsSelect(true);
                     RedrawFigures(ref storage);// перерисовывем
                 }
                 //Если нажат ctrl, выделяем несколько объектов
@@ -187,7 +187,7 @@ namespace LR7
 
                 //Устанавливаем цвет выделяемого объекта на новый добавленный
                 storage.objects[storage.get_count() - 1].LineColor = Color.Red;
-                storage.objects[storage.get_count() - 1].isSelect = true;
+                storage.objects[storage.get_count() - 1].IsSelect(true);
 
                 //Отрисовываем фигуру
                 figure.Draw(g);
@@ -202,7 +202,7 @@ namespace LR7
             if (storage.get_count() != 0)
                 for (int i = 0; i < storage.get_count(); ++i)
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
-                    if (storage.Empty(i) == false && storage.get_value(i).isSelect)
+                    if (storage.Empty(i) == false && storage.get_value(i).IsSelect())
                     {
                         switch (e.KeyData)
                         {

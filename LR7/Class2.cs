@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.IO;
 namespace LR7
 {
     public partial class Form1 : Form
@@ -49,6 +50,38 @@ namespace LR7
             return -1;// возвращает -1 если такого объекта не нашлось
         }
 
+        public static Figure SwitchFigure(ref string[] reader, int i)
+        {
+            string line = reader[i];
+            Figure f = null;
+            switch (line)
+            {
+                case "C":
+                    f = new Circle();
+                    f.Load(reader, i);
+                    break;
+                case "L":
+                    f = new Line();
+                    f.Load(reader, i);
+                    break;
+                case "S":
+                    f = new Square();
+                    f.Load(reader, i);
+                    break;
+                case "T":
+                    f = new Triangle();
+                    f.Load(reader, i);
+                    break;
+                case "G":
+                    f = new CGroup(100);
+                    f.Load(reader, i);
 
-    }
+                    break;
+
+            }
+            return f;
+        }
+
+
+        }
 }

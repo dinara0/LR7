@@ -39,6 +39,8 @@ namespace LR7
             this.button2 = new System.Windows.Forms.Button();
             this.ShowColor_button = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonRead = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,11 +140,35 @@ namespace LR7
             this.ShowColor_button.UseVisualStyleBackColor = true;
             this.ShowColor_button.Click += new System.EventHandler(this.ShowColor_button_Click);
             // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(414, 572);
+            this.buttonSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(126, 54);
+            this.buttonSave.TabIndex = 16;
+            this.buttonSave.Text = "Сохранить в файл";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // buttonRead
+            // 
+            this.buttonRead.Location = new System.Drawing.Point(548, 572);
+            this.buttonRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.buttonRead.Name = "buttonRead";
+            this.buttonRead.Size = new System.Drawing.Size(126, 54);
+            this.buttonRead.TabIndex = 17;
+            this.buttonRead.Text = "Выгрузить из файла";
+            this.buttonRead.UseVisualStyleBackColor = true;
+            this.buttonRead.Click += new System.EventHandler(this.buttonRead_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1230, 628);
+            this.Controls.Add(this.buttonRead);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonCGroup);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.ShowColor_button);
@@ -174,6 +200,8 @@ namespace LR7
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button ShowColor_button;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.Button buttonRead;
     }
 }
 

@@ -40,7 +40,7 @@ namespace LR7
             public virtual bool IsBlackboard() { return false; }// контроль выхода за рабочую область
 
             public virtual void Save(StreamWriter _stream) { }
-            public virtual void Load(string _stream) { }
+            public virtual Figure Load(string _stream, int i) { return null; }
 
 
         }
@@ -101,13 +101,12 @@ namespace LR7
                     _figures[i].GetPath();
                 return path2;
             }
-
             public override bool HitTest(Point p)
             {
                 var result = false;
                 for (int i = 0; i < _count; i++)
                     using (var path = _figures[i].GetPath())
-                        if (result = path.IsVisible(p)) //если попали хотя бы в один объект
+                        if (result == path.IsVisible(p)) //если попали хотя бы в один объект
                             result = true;
 
                 return result;
@@ -119,11 +118,29 @@ namespace LR7
                         return false;
                 return true;
             }
-
             public override void Resize(int a)
             {
                 for (int i = 0; i < _count; i++)
                     _figures[i].Resize(a);
+            }
+
+            public override void Save(StreamWriter _stream) {
+                _stream.WriteLine("G\n");
+                for (int i = 0; i < _count; i++)
+                    _figures[i].Save(_stream);
+                _stream.WriteLine("E");
+            }
+            public override Figure Load(string _stream, int i) {
+                string line = _stream.ReadLine();
+                CGroup g=new CGroup(10);
+                
+                while (line != "E")
+                {
+                    _figures[_count] = SwitchFigure(ref _stream);
+                    _count++;
+                    line = _stream.ReadLine();
+                }
+                return g;
             }
         }
 
@@ -135,8 +152,9 @@ namespace LR7
             public Circle() { FillColor = Color.LightBlue; }
 
             //Конструктор с параметрами
-            public Circle(int x, int y, Color color)
+            public Circle(int x, int y,int D, Color color)
             {
+                this.D = D;
                 this.x = x - D / 2;
                 this.y = y - D / 2;
                 FillColor = color;
@@ -200,6 +218,25 @@ namespace LR7
             public override bool IsSelect()
             {
                 return isSelect;
+            }
+
+            public override void Save(StreamWriter _stream)
+            {
+                _stream.WriteLine("C");
+                _stream.WriteLine("{0} {1} {2} {3}", x, y, D, FillColor.Name);
+            }
+            public override Figure Load(string _stream, int i)
+            {
+                string str = _stream.ReadLine();
+                string[] subs = str.Split(' ');               
+                this.x = Int32.Parse(subs[0]);
+                this.y = Int32.Parse(subs[1]);
+                this.D = Int32.Parse(subs[2]);
+                FillColor= ColorTranslator.FromHtml(subs[3]);
+                Color mycolor = ColorTranslator.FromHtml(subs[3]);
+                Figure c= new Circle(Int32.Parse(subs[0]), Int32.Parse(subs[1]), Int32.Parse(subs[2]),  mycolor);
+                return c;
+
             }
             //Деструктор
             ~Circle() { }
@@ -275,6 +312,23 @@ namespace LR7
             {
                 return isSelect;
             }
+
+            public override void Save(StreamWriter _stream)
+            {
+                _stream.WriteLine("L");
+                _stream.WriteLine("{0} {1} {2} {3}", Point1.X, Point1.Y, Point2.X, Point2.Y);
+            }
+            public override Figure Load(string _stream, int i)
+            {
+                string line = _stream.ReadLine();
+                string[] subs = line.Split(' ');
+                Point1 = new Point(Int32.Parse(subs[0]), Int32.Parse(subs[1]));
+                Point2 = new Point(Int32.Parse(subs[2]), Int32.Parse(subs[3]));
+                Point p1 = new Point(Int32.Parse(subs[0]), Int32.Parse(subs[1]));
+                Point p2 = new Point(Int32.Parse(subs[2]), Int32.Parse(subs[3]));
+                Figure l = new Line(p1, p2, Color.Black);
+                return l;
+            }
             //Деструктор
 
             ~Line() { }
@@ -286,8 +340,9 @@ namespace LR7
 
 
             //Конструктор с параметрами
-            public Square(int x, int y, Color color)
+            public Square(int x, int y, int A, Color color)
             {
+                this.A = A;
                 this.x = x - A / 2;
                 this.y = y - A / 2;
                 FillColor = color;
@@ -349,6 +404,26 @@ namespace LR7
             {
                 return isSelect;
             }
+
+            public override void Save(StreamWriter _stream)
+            {
+                _stream.WriteLine("S");
+                _stream.WriteLine("{0} {1} {2} {3}", x, y, A, FillColor.Name);
+            }
+            public override Figure Load(StreamReader _stream)
+            {
+                string line = _stream.ReadLine();
+                string[] subs = line.Split(' ');
+
+                this.x = Int32.Parse(subs[0]);
+                this.y = Int32.Parse(subs[1]);
+                this.A = Int32.Parse(subs[2]);
+                FillColor = ColorTranslator.FromHtml(subs[3]);
+                Color mycolor = ColorTranslator.FromHtml(subs[3]);
+                Figure s = new Square(Int32.Parse(subs[0]), Int32.Parse(subs[1]), Int32.Parse(subs[2]), mycolor);
+                return s;
+
+            }
             //Деструктор
             ~Square() { }
         }
@@ -360,13 +435,13 @@ namespace LR7
             public float beta;
             public float gamma;
             //Конструктор с параметрами
-            public Triangle(int x, int y, Color color)
+            public Triangle(int x, int y, int H, Color color)
             {
 
                 FillColor = color;
                 this.x = x;
                 this.y = y;
-
+                this.H = H;
                 p[0].X = x;
                 p[0].Y = y - 2 * H / 3;
                 p[1].X = x - Convert.ToInt32(H / Math.Sqrt(3));
@@ -443,6 +518,26 @@ namespace LR7
             {
                 return isSelect;
             }
+
+            public override void Save(StreamWriter _stream)
+            {
+                _stream.WriteLine("T");
+                _stream.WriteLine("{0} {1} {2} {3}", x, y, H, FillColor.Name);
+            }
+            public override Figure Load(StreamReader _stream)
+            {
+                string line = _stream.ReadLine();
+                string[] subs = line.Split(' ');
+
+                this.x = Int32.Parse(subs[0]);
+                this.y = Int32.Parse(subs[1]);
+                this.H = Int32.Parse(subs[2]);
+                FillColor = ColorTranslator.FromHtml(subs[3]);
+                Color mycolor = ColorTranslator.FromHtml(subs[3]);
+                Figure t = new Triangle(Int32.Parse(subs[0]), Int32.Parse(subs[1]), Int32.Parse(subs[2]), mycolor);
+                return t;
+            }
+
             //Деструктор
             ~Triangle() { }
         }

@@ -67,55 +67,47 @@ namespace LR7
                 else return false;
             }
 
-            public void LoadFigures(char filename)//сохранение данных о фигурах в текстовый файл
+            public void SaveFigures(string filename)//сохранение данных о фигурах в текстовый файл
             {
                 //File.Create("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt");// создаем файл
                 //File.AppendAllText("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt", size); //записываем в файл количество фигур хранилища
                 //FileStream file1 = new FileStream("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt", FileMode.Append); //открытие файла на дозапись в конец файла
-                StreamWriter writer = new StreamWriter("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt,", true, System.Text.Encoding.Default); //создаем «потоковый писатель» и связываем его с файловым потоком
-                writer.WriteLine(size + '0'); //записываем в файл с добавлением новой строки
+                StreamWriter writer = new StreamWriter(filename, true, System.Text.Encoding.Default); //создаем «потоковый писатель» и связываем его с файловым потоком
+                writer.WriteLine(size); //записываем в файл с добавлением новой строки
 
                 for (int i = 0; i < size; ++i)
                     objects[i].Save(writer);
                 writer.Close(); //закрываем поток. Не закрыв поток, в файл ничего не запишется
             }
-            public void ReadFigures(char filename)//чтение из текстового файла
+            public void ReadFigures(string filename)//чтение из текстового файла
             {
-                string line;
-                StreamReader reader = new StreamReader("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt");
+                string[] text1 = System.IO.File.ReadAllLines("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/bin/Debug/Figures.txt");
+                /*string line;
+                StreamReader reader = new StreamReader("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/bin/Debug/Figures.txt");
                 line = reader.ReadLine();
                 //Console.WriteLine(line);//считываем строку с колличеством объектов
+               
                 int count = Int32.Parse(line);//записываем количество фигур
                 for (int i = 0; i < count; ++i)
                 {
-                    // Console.WriteLine(reader.ReadLine());//
-                    line = reader.ReadLine();
-                    Figure f;
-                    switch (line)
-                    {
-                        case "C":
-                            f = new Circle();
-                            f.Load(reader.ReadLine());
-                            break;
-                        case "L":
-                            f = new Line();
-                            f.Load(reader.ReadLine());
-                            break;
-                        case "S":
-                            f = new Square();
-                            f.Load(reader.ReadLine());
-                            break;
-                        case "T":
-                            f = new Triangle();
-                            f.Load(reader.ReadLine());
-                            break;
-
+                    reader.ReadLine();
+                    objects[i] = SwitchFigure(ref reader);
+                    size++;
+                   // SwitchFigure(ref reader);
                     }
-                    reader.Close();
+                    reader.Close();// закрываем поток*/
+                int count = Int32.Parse(text1[0]);
+                for (int i = 1; i < count; ++i)
+                {
+                   objects[i-1] = SwitchFigure(ref text1, i);
+                    size++;
+                    // SwitchFigure(ref reader);
                 }
 
 
             }
         };
-    }
-    }
+       
+
+        }
+}

@@ -101,7 +101,7 @@ namespace LR7
 
         private void buttonCGroup_Click(object sender, EventArgs e)
         {
-            int count = 0;
+            /*int count = 0;
             if (storage.get_count() != 0)
                 for (int i = 0; i < storage.get_count(); ++i)
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
@@ -111,17 +111,18 @@ namespace LR7
                         count++;
 
                     }
-                }
-            Figure group = new CGroup(count);
+                }*/
+            Figure group = new CGroup(100);
             //int j = 0;
             if (storage.get_count() != 0)
-                for (int i = 0; i < storage.get_count(); ++i)
+                for (int i = 0; i <= storage.get_count(); ++i)
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
                     if (storage.Empty(i) == false && storage.get_value(i).IsSelect())
                     {
                         ((CGroup)group).AddFigure(storage.get_value(i));
-                        storage.delete_value(i);
 
+                        storage.delete_value(i);
+                        i--;
                         
                     }
                 }
@@ -152,11 +153,11 @@ namespace LR7
                 Figure figure = new Figure();// создаем объект класса Figure
                 // создаем объект, смотря какая кнопка была нажата 
                 if (buttonSquare.Enabled)//
-                    figure = new Square(e.X, e.Y, ChooseColor);
+                    figure = new Square(e.X, e.Y, 50, ChooseColor);
                 if (buttonTriangle.Enabled)
-                    figure = new Triangle(e.X, e.Y, ChooseColor);
+                    figure = new Triangle(e.X, e.Y, 50, ChooseColor);
                 if (buttonCircle.Enabled)
-                    figure = new Circle(e.X, e.Y, ChooseColor);
+                    figure = new Circle(e.X, e.Y, 50, ChooseColor);
                 if (buttonLine.Enabled)
                 {
                     if (fl)//нужно два нажатия, при первом образуются координаты первой точки, при втором - второй
@@ -241,6 +242,18 @@ namespace LR7
             //RedrawFigures(ref storage);//перерисовываем 
 
 
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)// сохранить объекты в файл
+        {
+            //for(int i=0; i<storage.get_count; i++)
+            storage.SaveFigures("Figures.txt");
+        }
+
+        private void buttonRead_Click(object sender, EventArgs e)
+        {
+            storage.ReadFigures("Figures.txt");
+            RedrawFigures(ref storage);//перерисовываем 
         }
     }
 }

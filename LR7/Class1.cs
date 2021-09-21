@@ -40,7 +40,7 @@ namespace LR7
             public virtual bool IsBlackboard() { return false; }// контроль выхода за рабочую область
 
             public virtual void Save(StreamWriter _stream) { }
-            public virtual Figure Load(string _stream, int i) { return null; }
+            public virtual void Load(List<string> _stream) {  }
 
 
         }
@@ -50,7 +50,7 @@ namespace LR7
             private int _maxcount;// максимальное количество объектов в группе
             private int _count;// текущее количество объектов в группе
             private Figure[] _figures;
-            public CGroup(int maxcount)
+            public CGroup(int maxcount)//конструктор
             {
                 _figures=new Figure[maxcount];
                 _maxcount = maxcount;
@@ -130,17 +130,12 @@ namespace LR7
                     _figures[i].Save(_stream);
                 _stream.WriteLine("E");
             }
-            public override Figure Load(string _stream, int i) {
-                string line = _stream.ReadLine();
-                CGroup g=new CGroup(10);
-                
-                while (line != "E")
+            public override void Load(List<string> _stream) {                   
+                while (_stream[0] != "E")
                 {
                     _figures[_count] = SwitchFigure(ref _stream);
-                    _count++;
-                    line = _stream.ReadLine();
-                }
-                return g;
+                    _count++;                    
+                }                
             }
         }
 
@@ -225,18 +220,14 @@ namespace LR7
                 _stream.WriteLine("C");
                 _stream.WriteLine("{0} {1} {2} {3}", x, y, D, FillColor.Name);
             }
-            public override Figure Load(string _stream, int i)
+            public override void Load(List<string> _stream)
             {
-                string str = _stream.ReadLine();
+                string str = _stream[0];
                 string[] subs = str.Split(' ');               
                 this.x = Int32.Parse(subs[0]);
                 this.y = Int32.Parse(subs[1]);
                 this.D = Int32.Parse(subs[2]);
                 FillColor= ColorTranslator.FromHtml(subs[3]);
-                Color mycolor = ColorTranslator.FromHtml(subs[3]);
-                Figure c= new Circle(Int32.Parse(subs[0]), Int32.Parse(subs[1]), Int32.Parse(subs[2]),  mycolor);
-                return c;
-
             }
             //Деструктор
             ~Circle() { }
@@ -318,16 +309,15 @@ namespace LR7
                 _stream.WriteLine("L");
                 _stream.WriteLine("{0} {1} {2} {3}", Point1.X, Point1.Y, Point2.X, Point2.Y);
             }
-            public override Figure Load(string _stream, int i)
+            public override void Load(List<string> _stream)
             {
-                string line = _stream.ReadLine();
+                string line = _stream[0];
                 string[] subs = line.Split(' ');
                 Point1 = new Point(Int32.Parse(subs[0]), Int32.Parse(subs[1]));
                 Point2 = new Point(Int32.Parse(subs[2]), Int32.Parse(subs[3]));
                 Point p1 = new Point(Int32.Parse(subs[0]), Int32.Parse(subs[1]));
                 Point p2 = new Point(Int32.Parse(subs[2]), Int32.Parse(subs[3]));
-                Figure l = new Line(p1, p2, Color.Black);
-                return l;
+
             }
             //Деструктор
 
@@ -410,19 +400,14 @@ namespace LR7
                 _stream.WriteLine("S");
                 _stream.WriteLine("{0} {1} {2} {3}", x, y, A, FillColor.Name);
             }
-            public override Figure Load(StreamReader _stream)
+            public override void Load(List<string> _stream)
             {
-                string line = _stream.ReadLine();
+                string line = _stream[0];
                 string[] subs = line.Split(' ');
-
                 this.x = Int32.Parse(subs[0]);
                 this.y = Int32.Parse(subs[1]);
                 this.A = Int32.Parse(subs[2]);
-                FillColor = ColorTranslator.FromHtml(subs[3]);
-                Color mycolor = ColorTranslator.FromHtml(subs[3]);
-                Figure s = new Square(Int32.Parse(subs[0]), Int32.Parse(subs[1]), Int32.Parse(subs[2]), mycolor);
-                return s;
-
+                FillColor = ColorTranslator.FromHtml(subs[3]);               
             }
             //Деструктор
             ~Square() { }
@@ -524,18 +509,15 @@ namespace LR7
                 _stream.WriteLine("T");
                 _stream.WriteLine("{0} {1} {2} {3}", x, y, H, FillColor.Name);
             }
-            public override Figure Load(StreamReader _stream)
+            public override void Load(List<string> _stream)
             {
-                string line = _stream.ReadLine();
+                string line = _stream[0];
                 string[] subs = line.Split(' ');
 
                 this.x = Int32.Parse(subs[0]);
                 this.y = Int32.Parse(subs[1]);
                 this.H = Int32.Parse(subs[2]);
                 FillColor = ColorTranslator.FromHtml(subs[3]);
-                Color mycolor = ColorTranslator.FromHtml(subs[3]);
-                Figure t = new Triangle(Int32.Parse(subs[0]), Int32.Parse(subs[1]), Int32.Parse(subs[2]), mycolor);
-                return t;
             }
 
             //Деструктор

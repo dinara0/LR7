@@ -99,19 +99,9 @@ namespace LR7
         }
 
 
-        private void buttonCGroup_Click(object sender, EventArgs e)
+        private void buttonCGroup_Click(object sender, EventArgs e)// нажата клавиша группировки
         {
-            /*int count = 0;
-            if (storage.get_count() != 0)
-                for (int i = 0; i < storage.get_count(); ++i)
-                { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
-                    if (storage.Empty(i) == false && storage.get_value(i).IsSelect())
-                    {
-
-                        count++;
-
-                    }
-                }*/
+            
             Figure group = new CGroup(100);
             //int j = 0;
             if (storage.get_count() != 0)
@@ -119,9 +109,9 @@ namespace LR7
                 { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
                     if (storage.Empty(i) == false && storage.get_value(i).IsSelect())
                     {
-                        ((CGroup)group).AddFigure(storage.get_value(i));
+                        ((CGroup)group).AddFigure(storage.get_value(i));// добавляем объекты в группу
 
-                        storage.delete_value(i);
+                        storage.delete_value(i);// удаляем объект из группы
                         i--;
                         
                     }
@@ -250,7 +240,7 @@ namespace LR7
             storage.SaveFigures("Figures.txt");
         }
 
-        private void buttonRead_Click(object sender, EventArgs e)
+        private void buttonRead_Click(object sender, EventArgs e)// выгрузить объекты из файла
         {
             storage.ReadFigures("Figures.txt");
             RedrawFigures(ref storage);//перерисовываем 

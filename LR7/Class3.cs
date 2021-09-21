@@ -52,7 +52,7 @@ namespace LR7
 
                     return;
                 }
-                for (int i = index + 1, j = index; i < this.size; i++, j++)
+                for (int i = index + 1, j = index; i <= this.size; i++, j++)
                 {
 
                     objects[j] = objects[i];//смещаем элементы, "затирая" элемент по индексу
@@ -68,10 +68,7 @@ namespace LR7
             }
 
             public void SaveFigures(string filename)//сохранение данных о фигурах в текстовый файл
-            {
-                //File.Create("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt");// создаем файл
-                //File.AppendAllText("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt", size); //записываем в файл количество фигур хранилища
-                //FileStream file1 = new FileStream("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/Figures.txt", FileMode.Append); //открытие файла на дозапись в конец файла
+            {              
                 StreamWriter writer = new StreamWriter(filename, true, System.Text.Encoding.Default); //создаем «потоковый писатель» и связываем его с файловым потоком
                 writer.WriteLine(size); //записываем в файл с добавлением новой строки
 
@@ -81,25 +78,12 @@ namespace LR7
             }
             public void ReadFigures(string filename)//чтение из текстового файла
             {
-                string[] text1 = System.IO.File.ReadAllLines("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/bin/Debug/Figures.txt");
-                /*string line;
-                StreamReader reader = new StreamReader("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/bin/Debug/Figures.txt");
-                line = reader.ReadLine();
-                //Console.WriteLine(line);//считываем строку с колличеством объектов
-               
-                int count = Int32.Parse(line);//записываем количество фигур
+                List<string> list = File.ReadAllLines("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR7/LR7/bin/Debug/Figures.txt").ToList();                              
+                int count = Int32.Parse(list[0]);
+                list.RemoveAt(0);
                 for (int i = 0; i < count; ++i)
                 {
-                    reader.ReadLine();
-                    objects[i] = SwitchFigure(ref reader);
-                    size++;
-                   // SwitchFigure(ref reader);
-                    }
-                    reader.Close();// закрываем поток*/
-                int count = Int32.Parse(text1[0]);
-                for (int i = 1; i < count; ++i)
-                {
-                   objects[i-1] = SwitchFigure(ref text1, i);
+                   objects[i] = SwitchFigure(ref list);
                     size++;
                     // SwitchFigure(ref reader);
                 }

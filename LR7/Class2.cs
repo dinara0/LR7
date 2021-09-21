@@ -50,35 +50,38 @@ namespace LR7
             return -1;// возвращает -1 если такого объекта не нашлось
         }
 
-        public static Figure SwitchFigure(ref string[] reader, int i)
+        public static Figure SwitchFigure(ref List<string> reader)
         {
-            string line = reader[i];
+            
+            string line = reader[0];
+            reader.RemoveAt(0);
             Figure f = null;
             switch (line)
             {
                 case "C":
                     f = new Circle();
-                    f.Load(reader, i);
+                    f.Load(reader);
                     break;
                 case "L":
                     f = new Line();
-                    f.Load(reader, i);
+                    f.Load(reader);
                     break;
                 case "S":
                     f = new Square();
-                    f.Load(reader, i);
+                    f.Load(reader);
                     break;
                 case "T":
                     f = new Triangle();
-                    f.Load(reader, i);
+                    f.Load(reader);
                     break;
                 case "G":
                     f = new CGroup(100);
-                    f.Load(reader, i);
+                    f.Load(reader);
 
                     break;
 
             }
+            reader.RemoveAt(0);
             return f;
         }
 
